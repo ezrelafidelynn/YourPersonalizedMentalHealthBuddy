@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Mental Health Buddy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Welcome to Your Personalized Mental Health Buddy</h1>
+        <div id="emotion-container">
+            <label for="emotion-select">How are you feeling today?</label>
+            <select id="emotion-select">
+                <option value="">Select an emotion</option>
+                <option value="happy">Happy</option>
+                <option value="sad">Sad</option>
+                <option value="anxious">Anxious</option>
+                <option value="angry">Angry</option>
+                <option value="stressed">Stressed</option>
+            </select>
+        </div>
+        <div id="chat-container">
+            <div id="chat-box"></div>
+            <input type="text" id="user-input" placeholder="Type your message..." />
+            <button id="send-button">Send</button>
+            <button id="feedback-button">Give Feedback</button>
+            <input type="text" id="feedback-input" placeholder="Your feedback..." style="display:none;" />
+        </div>
+        <div id="chat-container">
+            <div id="chat-box"></div>
+            <input type="text" id="user-input" placeholder="Type your message..." />
+            <button id="send-button">Send</button>
+        </div>
+        <div id="resources-container">
+            <h2>Helpful Resources</h2>
+            <div id="resources"></div>
+        </div>
+        <div id="model-container">
+            <h2>Simple Prediction Model</h2>
+            <input type="number" id="input-number" placeholder="Enter a number..." />
+            <button id="predict-button">Predict</button>
+            <p id="prediction-output"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        const model = tf.sequential();
+        model.add(tf.layers.dense({units: 1, inputShape: [1]}));
+        
+        model.compile({loss: 'meanSquaredError', optimizer: 'sgd'});
+
+        const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
+        const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]); // y = 2x - 1
+
+        async function trainModel() {
+            const response = await model.fit(xs, ys, {epochs: 100});
+            console.log(`Model trained: ${response.history.loss[0]}`);
+        }
+
+        async function makePrediction() {
+            const inputValue = parseFloat(document.getElementById('input-number').value);
+            const output = model.predict(tf.tensor2d([inputValue], [1, 1]));
+            const prediction = await output.array();
+            document.getElementById('prediction-output').innerText = `Predicted output: ${prediction[0][0]}`;
+        }
+
+        function getBotResponse(userMessage) {
+            const emotion = document.getElementById('emotion-select').value;
+            let botResponse = '';
+
+            if (userMessage.includes('vent') || userMessage.includes('share')) {
+                botResponse = "I'm here to listen. Please tell me what's on your mind.";
+            } else {
+                switch (emotion) {
+                    case 'happy':
+                        botResponse = "That's great to hear! Keep spreading the positivity!";
+                        break;
+                    case 'sad':
+                        botResponse = "I'm sorry to hear that. It's okay to feel sad sometimes. I'm here for you.";
+                        break;
+                    case 'anxious':
+                        botResponse = "Anxiety can be tough. Remember to take deep breaths and take things one step at a time.";
+                        break;
+                    case 'angry':
+                        botResponse = "It's normal to feel angry. Try to express your feelings in a healthy way.";
+                        break;
+                    case 'stressed':
+                        botResponse = "Stress can be overwhelming. Make sure to take breaks and practice self-care.";
+                        break;
+                    default:
+                        botResponse = "How can I assist you today?";
+                }
+            }
+            return botResponse;
+        }
+    </script>    
+</body>

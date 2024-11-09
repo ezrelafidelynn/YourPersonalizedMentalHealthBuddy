@@ -1,0 +1,14 @@
+{
+    "name": "web3-ai-customer-service",
+    "version": "1.0.0",
+    "description": "A web 3 AI customer service website.",
+    "main": "index.html",
+    "scripts": {
+      "start": "live-server"
+    },
+    "dependencies": {
+      "live-server": "^1.2.1"
+    },
+    "author": "",
+    "license": "ISC"
+  }
