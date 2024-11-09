@@ -1,5 +1,12 @@
 # Your Personalized Mental Health Buddy
 
+##Lomba Hackathon 7.0
+Member:
+Damien Herlnata
+Theona Arlinton
+Pazella Mutia Reflin
+Ezrela Fidelynn Surya Wibisana
+
 ## Overview
 
 Welcome to the **Your Personalized Mental Health Buddy** project! In an era where digital interactions are becoming increasingly important, the need for efficient and empathetic customer service solutions is paramount. This project harnesses the power of **Web 3** technologies to create a decentralized, user-centric AI customer service application that is not only responsive but also intuitive and supportive.
