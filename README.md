@@ -1,8 +1,8 @@
-# Web 3 AI Customer Service
+# Your Personalized Mental Health Buddy
 
 ## Overview
 
-Welcome to the **Web 3 AI Customer Service** project! In an era where digital interactions are becoming increasingly important, the need for efficient and empathetic customer service solutions is paramount. This project harnesses the power of **Web 3** technologies to create a decentralized, user-centric AI customer service application that is not only responsive but also intuitive and supportive.
+Welcome to the **Your Personalized Mental Health Buddy** project! In an era where digital interactions are becoming increasingly important, the need for efficient and empathetic customer service solutions is paramount. This project harnesses the power of **Web 3** technologies to create a decentralized, user-centric AI customer service application that is not only responsive but also intuitive and supportive.
 
 ### What is Web 3?
 
@@ -56,10 +56,6 @@ The project aims to evolve continuously. Future enhancements may include:
 - User authentication for personalized experiences.
 - Support for multiple languages.
 - Enhanced UI with interactive elements and animations.
-
-## Contributing
-
-We welcome contributions to this project! If you have ideas for features, improvements, or bug fixes, please feel free to submit a pull request or open an issue.
 
 ## License
 
