@@ -1,3 +1,23 @@
+const model = tf.sequential();
+model.add(tf.layers.dense({units: 1, inputShape: [1]}));
+model.compile({loss: 'meanSquaredError', optimizer: 'sgd'});
+
+const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
+const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
+
+async function trainModel() {
+    const response = await model.fit(xs, ys, {epochs: 100});
+    console.log(`Model trained: ${response.history.loss[0]}`);
+}
+
+async function makePrediction() {
+    const inputValue = parseFloat(document.getElementById('input-number').value);
+    const inputTensor = tf.tensor2d([inputValue], [1, 1]);
+    const prediction = model.predict(inputTensor);
+    const outputValue = prediction.dataSync()[0];
+    document.getElementById('prediction-output').innerText = `Predicted value: ${outputValue}`;
+}
+
 function getBotResponse(userMessage) {
     const emotion = document.getElementById('emotion-select').value;
     let botResponse = '';
@@ -60,7 +80,7 @@ function getBotResponse(userMessage) {
                 ];
                 botResponse = anxiousResponses[Math.floor(Math.random() * anxiousResponses.length)];
                 break;
-            case 'angry':
+ case 'angry':
                 const angryResponses = [
                     "It's completely normal to feel angry. Let's find a way to express it.",
                     "Anger is a valid emotion. Try to channel it positively.",
@@ -84,9 +104,8 @@ function getBotResponse(userMessage) {
 }
 
 document.getElementById('send-button').onclick = function() {
-    const userInput = document .getElementById('user-input').value;
-    const emotion = document.getElementById('emotion-select').value;
-    const botResponse = getBotResponse(userInput, emotion);
+    const userInput = document.getElementById('user-input').value;
+    const botResponse = getBotResponse(userInput);
     
     const userMessageElement = document.createElement('div');
     userMessageElement.className = 'user-message';
@@ -111,3 +130,5 @@ function initChatbot() {
 }
 
 window.onload = initChatbot;
+
+trainModel();

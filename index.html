@@ -9,7 +9,9 @@
 </head>
 <body>
     <div id="app">
-        <h1>Welcome to Your Personalized Mental Health Buddy</h1>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+        <h1 style="font-family: 'Montserrat', sans-serif; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">Welcome to Your Personalized Mental Health Buddy!</h1>
+
         <div id="emotion-container">
             <label for="emotion-select">How are you feeling today?</label>
             <select id="emotion-select">
@@ -25,23 +27,12 @@
             <div id="chat-box"></div>
             <input type="text" id="user-input" placeholder="Type your message..." />
             <button id="send-button">Send</button>
-            <button id="feedback-button">Give Feedback</button>
-            <input type="text" id="feedback-input" placeholder="Your feedback..." style="display:none;" />
         </div>
-        <div id="chat-container">
-            <div id="chat-box"></div>
-            <input type="text" id="user-input" placeholder="Type your message..." />
-            <button id="send-button">Send</button>
-        </div>
-        <div id="resources-container">
-            <h2>Helpful Resources</h2>
-            <div id="resources"></div>
-        </div>
-        <div id="model-container">
-            <h2>Simple Prediction Model</h2>
-            <input type="number" id="input-number" placeholder="Enter a number..." />
-            <button id="predict-button">Predict</button>
-            <p id="prediction-output"></p>
+        <div id="feedback-container">
+            <h2>Feedback</h2>
+            <input type="text" id="feedback-input" placeholder="Your feedback..." />
+            <button id="feedback-submit-button">Submit Feedback</button>
+            <p id="feedback-confirmation" style="color: green; display: none;">Thank you for your feedback!</p>
         </div>
     </div>
     <script src="script.js"></script>
@@ -61,39 +52,37 @@
 
         async function makePrediction() {
             const inputValue = parseFloat(document.getElementById('input-number').value);
-            const output = model.predict(tf.tensor2d([inputValue], [1, 1]));
-            const prediction = await output.array();
-            document.getElementById('prediction-output').innerText = `Predicted output: ${prediction[0][0]}`;
+ const inputTensor = tf.tensor2d([inputValue], [1, 1]);
+            const prediction = model.predict(inputTensor);
+            prediction.print();
+            const outputValue = prediction.dataSync()[0];
+            document.getElementById('prediction-output').innerText = `Predicted value: ${outputValue}`;
         }
 
-        function getBotResponse(userMessage) {
-            const emotion = document.getElementById('emotion-select').value;
-            let botResponse = '';
-
-            if (userMessage.includes('vent') || userMessage.includes('share')) {
-                botResponse = "I'm here to listen. Please tell me what's on your mind.";
-            } else {
-                switch (emotion) {
-                    case 'happy':
-                        botResponse = "That's great to hear! Keep spreading the positivity!";
-                        break;
-                    case 'sad':
-                        botResponse = "I'm sorry to hear that. It's okay to feel sad sometimes. I'm here for you.";
-                        break;
-                    case 'anxious':
-                        botResponse = "Anxiety can be tough. Remember to take deep breaths and take things one step at a time.";
-                        break;
-                    case 'angry':
-                        botResponse = "It's normal to feel angry. Try to express your feelings in a healthy way.";
-                        break;
-                    case 'stressed':
-                        botResponse = "Stress can be overwhelming. Make sure to take breaks and practice self-care.";
-                        break;
-                    default:
-                        botResponse = "How can I assist you today?";
-                }
+        document.getElementById('send-button').addEventListener('click', () => {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput) {
+                const chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML += `<div class="user-message">${userInput}</div>`;
+                document.getElementById('user-input').value = '';
+                setTimeout(() => {
+                    chatBox.innerHTML += `<div class="bot-message">Bot response to: ${userInput}</div>`;
+                    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+                }, 1000);
             }
-            return botResponse;
-        }
-    </script>    
+        });
+
+        document.getElementById('feedback-submit-button').addEventListener('click', () => {
+            const feedbackInput = document.getElementById('feedback-input').value;
+            if (feedbackInput) {
+                document.getElementById('feedback-confirmation').style.display = 'block';
+                document.getElementById('feedback-input').value = '';
+            }
+        });
+
+        document.getElementById('predict-button').addEventListener('click', makePrediction);
+
+        trainModel();
+    </script>
 </body>
+</html>
